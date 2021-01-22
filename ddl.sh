@@ -13,8 +13,8 @@ function exist(){
 function useDb(){
     dbDir=$1
     currDir=$($"pwd")
-    databsePath = $currDir"/$dbDir"
-    echo $databsePath
+    inUseDbPath=$currDir"/$dbDir"
+    echo $inUseDbPath
 }
 
 function isDbEmpty(){
