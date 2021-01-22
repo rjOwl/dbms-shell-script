@@ -7,10 +7,12 @@ case $REPLY in
     1) echo "1";;
     2) echo "2" ;;
     3) read -p "DB name> " db_name
-        dbExist=$( exist "$db_name" )
-        if [ $dbExist -eq 1 ] 
+        dbExist $db_name
+        dbExist=$?
+        if [ $dbExist -eq 1 ]
         then
-            inUseDbPath=$(useDb "$db_name")
+            useDb $db_name
+            inUseDbPath=$?
             echo -e "[] Connection established"
         else echo -e "\033[31m[X]\e[0m Database dosen't exist!"
         fi
@@ -19,8 +21,10 @@ case $REPLY in
         dbExist=$( exist "$db_name" )
         if [ $dbExist -eq 1 ]
             then
-                dbPath=$(useDb "$db_name")
-                isEmpty=$(isDbEmpty "$db_name")
+                useDb $db_name
+                dbPath=$?
+                isDbEmpty $db_name
+                isEmpty=$?
                 if [ $isEmpty -eq 1 ]
                 then
                     echo "Empty schema;"
