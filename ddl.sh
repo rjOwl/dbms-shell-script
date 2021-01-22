@@ -1,12 +1,12 @@
 #!/bin/bash
 
 # Returns 1 if the directory exists and -1 if it doesn't
-function exist(){
+function dbExist(){
     if [ -d $1 ]
     then 
-        echo 1
+        return 1
     else
-        echo -1
+        return -1
     fi
 }
 
@@ -14,6 +14,7 @@ function useDb(){
     dbDir=$1
     currDir=$($"pwd")
     inUseDbPath=$currDir"/$dbDir"
+    cd $inUseDbPath
     echo $inUseDbPath
 }
 
@@ -21,10 +22,19 @@ function isDbEmpty(){
 	contents="$(ls -A $1)"
 	if [ ! $contents ]
 	 then
-	  echo 1
+	  return 1
 	else
-	  echo -1
+	  return -1
 	fi
+}
+function isInUse(){
+    inUseDbPath=$1
+    if [[ $PWD == $inUseDbPath ]]
+    then
+        return -1
+    else
+        return 1
+    fi
 }
 
 function dropDb(){
