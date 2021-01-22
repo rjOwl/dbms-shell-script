@@ -2,24 +2,28 @@
 
 #entry poin to the database engine
 
-typeset -i schema=`find Database-schema 2> /dev/null | wc -l`
-if [ $schema -eq 0 ]
+if [ ! -d Database-schema ]
 then
 	mkdir Database-schema
 fi
 
 cd Database-schema
+echo " Welcome"
+echo ------------------------------------------------------------------------
 
 function createNewDatabase {
-	echo __________________________________________________________________
+	echo ------------------------------------------------------------------------
 	while true
 	do
 		read -p "please write the name of new Databese: " newDatabaseName
-		typeset -i checkOnDatabase=`find $newDatabaseName 2> /dev/null | wc -l`
-		if [ $checkOnDatabase -eq 1 ]
+		#typeset -i checkOnDatabase=`find $newDatabaseName 2> /dev/null | wc -l`
+		dbExist $newDatabaseName
+		checkOnDatabase=$?
+		if [ $checkOnDatabase -eq 1  ]
 		then
-			echo -e "\e[31mThis database is already exist, please rewrite the name.\e[0m"
-		elif [[ $newDatabaseName == $EOF ]]
+			echo -e "\e[31mThis database already exist, please rewrite the name.\e[0m"
+		elif  [[ $newDatabaseName == $EOF ]]
+
 		then
 			echo " "
 			break
@@ -30,22 +34,20 @@ function createNewDatabase {
 		fi
 
 	done
-	echo __________________________________________________________________ 
+	echo ------------------------------------------------------------------------
 }
 
 function listDatabases  {
-	echo __________________________________________________________________
-	typeset databaseList=`ls`
+	echo ------------------------------------------------------------------------
+	typeset databaseList=`ls | wc -l`
 	if [ $databaseList -eq 0 ]
 	then 
-		echo -e "\e[31mNo Database exist yet.\e[0m"
+		echo -e "\e[31mNo Database exists yet.\e[0m"
 	else
-		for i in $databaseList
-		do
-			echo $i
-		done
+		echo List of Databases:
+		ls -1
 	fi
-	echo __________________________________________________________________
+	echo ------------------------------------------------------------------------
 }
 
 PS3="please enter your choice: "
@@ -57,11 +59,10 @@ do
 		3) ;;
 		4) ;;
 		5) break;;
-		*) echo -e "\e[31mWrong choice! please choose from the above choices.\e[0m" ;;
+		*) echo -e "\e[31mWrong choice! please choose from the above choices.\e[0m"
+		   echo ------------------------------------------------------------------------ ;;
 	esac
 	echo $'1) Create Database.\n2) List Database.\n3) Connect to Databases.\n4) Drop Database.\n5) Exit.'
-
-
 done
 
 
