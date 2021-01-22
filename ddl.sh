@@ -28,13 +28,14 @@ function isDbEmpty(){
 	  return -1
 	fi
 }
+
 function isInUse(){
     inUseDbPath=$1
     if [[ $PWD == $inUseDbPath ]]
     then
-        return -1
-    else
         return 1
+    else
+        return -1
     fi
 }
 

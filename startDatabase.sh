@@ -13,12 +13,20 @@ case $REPLY in
         then
             useDb $db_name
             inUseDbPath=$?
+            cd $db_name
             echo -e "[] Connection established"
         else echo -e "\033[31m[X]\e[0m Database dosen't exist!"
         fi
     ;;
     4) read -p "DB name> " db_name
-        dbExist=$( exist "$db_name" )
+        exist $db_name
+        dbExist=$?
+        isInUse $db_name
+        isInUse=$?
+        if [ $isInUse -eq 1 ]
+        then
+            cd ..
+        fi
         if [ $dbExist -eq 1 ]
             then
                 useDb $db_name
