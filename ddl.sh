@@ -18,6 +18,7 @@ function useDb(){
     echo $inUseDbPath
 }
 
+# Returns 1 if database empty else -1
 function isDbEmpty(){
 	contents="$(ls -A $1)"
 	if [ ! $contents ]
