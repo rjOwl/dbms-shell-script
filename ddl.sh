@@ -12,14 +12,14 @@ function dbExist(){
 
 function useDb(){
     dbDir=$1
-    currDir=$($"pwd")
-    inUseDbPath=$currDir"/$dbDir"
-    cd $inUseDbPath
-    echo $inUseDbPath
+    inUseDbPath="$PWD/$dbDir"
+    cd $dbDir
+	echo $inUseDbPath
 }
 
 # Returns 1 if database empty else -1
 function isDbEmpty(){
+	pwd
 	contents="$(ls -A $1)"
 	if [ ! $contents ]
 	 then
