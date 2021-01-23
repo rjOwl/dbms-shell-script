@@ -3,6 +3,11 @@
 #interface with tables.
 clear
 read -p "please insert table name: " tableName
+while [ -f $tableName ] 
+do
+	echo -e "\e[31mThe table name already exist, please insert another name.\e[0m"
+	read -p "please insert table name: " tableName
+done 
 typeset -i endCreation=0
 typeset -i numberOfcolumn=0
 columnNames=""
@@ -28,20 +33,23 @@ do
 				continue			
 			fi
 		else
-		touch $tableName
-		## creation
-		break;
+			touch $tableName
+			echo $columnNames >> $tableName
+			echo $columnDatatype >> $tableName
+			echo $columnPrimaryKey >> $tableName
+			break
 		fi
 	elif [[ $userChoice == 1 ]]
 	then
 		if [[ $numberOfcolumn != 0 ]]
 		then
-			columnName+="||"
+			columnNames+="||"
 			columnDatatype+="||"
+			echo $columnNames
 		fi
 
 		read -p "please insert new column name: " newColumnName
-		columnName+=$newColumnName
+		columnNames+=$newColumnName
 		read -p "please insert new column datatype: " newColumnDatatype
 		columnDatatype+=$newColumnDatatype
 		let "numberOfcolumn++"
@@ -54,7 +62,7 @@ do
 			fi
 		fi	
 	else
-		"\e[31mWrong choice.\e[0m"
+		echo -e "\e[31mWrong choice.\e[0m"
 	fi		 
 done
 
