@@ -1,6 +1,8 @@
 #!/bin/bash
 
 #interface with tables.
+. ./table-logic.sh
+function tableMenu() {
 clear
 echo instructions here
 echo ----------------------------------------------------------------------------
@@ -22,3 +24,5 @@ do
 	esac
 	echo $'1) Create Table.\n2) List Tables.\n3) Drop Table.\n4) Insert into Table.\n5) Select From Table.\n6) Delete From Table.\n7) Update Table.\n8) return to database schema to change used database.'
 done
+}
+tableMenu
