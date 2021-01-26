@@ -1,7 +1,9 @@
 #!/bin/bash
 
 #interface with tables.
-. ./table-logic.sh
+. ./create-table.sh
+. ./delete-from-table.sh
+. ./update-table.sh
 function tableMenu() {
 clear
 echo instructions here
