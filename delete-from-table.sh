@@ -1,5 +1,8 @@
 #!/bin/bash
 
+#variables section
+DELIMITER=";;"
+
 #function to check if the table is exist
 function checkOnTable(){
 	read -p "please insert table name: " tableName
@@ -43,10 +46,10 @@ function selectColumnFromTable(){
 function deleteFromTable() {
 	clear
 	checkOnTable
-	columsNameArray=`sed -n '1p' .$tableName | sed 's/;;/ /g'`
+	columsNameArray=`sed -n '1p' .$tableName | sed "s/$DELIMITER/ /g"`
 	selectColumnFromTable
 	read -p "Please enter the value to search for: " searchValue
-	replaceLocations=`awk -v searchColumn=$searchColumn -v searchValue=$searchValue 'BEGIN{FS=";;"} { if($searchColumn == searchValue){ print NR," "}}' $tableName`
+	replaceLocations=`awk -v searchColumn=$searchColumn -v searchValue=$searchValue -v delimiter=$DELIMITER 'BEGIN{FS=delimiter} { if($searchColumn == searchValue){ print NR," "}}' $tableName`
 	typeset -i index=0
 	#check if any record matched.
 	if [[ ${#replaceLocations} == 0 ]]
