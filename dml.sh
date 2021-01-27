@@ -125,6 +125,7 @@ function renameTable(){
     tableName=$1
     new_name=$2
     mv $tableName $new_name
+    mv .$tableName .$new_name
 }
 
 function dropTable(){
@@ -132,8 +133,8 @@ function dropTable(){
     tableExists $1 
     t=$?
     if [ $t -eq 1 ]
-        then 
-        mv $1 .trash
+        then
+        mv $1 .$1 .trash
     else echo "Table is not found"
     fi
 }
