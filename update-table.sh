@@ -105,7 +105,7 @@ function replaceRecordInTable(){
 		do
 			read -p "please enter the new $i: " newData
 			if [[ ( ${columnsDatatypeArray[currentColumn]} == INT && $newData =~ ^[0-9]+$ ) ||
-			      ( ${columnsDatatypeArray[currentColumn]} == DATE && `date -d $newData '+%Y-%m-%d'` ) ||
+			      ( ${columnsDatatypeArray[currentColumn]} == DATE && $newData == `date -d $newData '+%Y-%m-%d'` ) ||
 			      ( ${columnsDatatypeArray[currentColumn]} == STRING ) ]]
 			then
 				if [[ $columnPrimaryKey != $currentColumn ]]
