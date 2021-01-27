@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DELIMITER=';;'
+. globals.sh
 
 function insertIntoTable(){
     # takes table name and that's it
@@ -20,27 +20,25 @@ function insertIntoTable(){
     echo -----------------------------------------
     for (( i=0; i<$length; i++ ))
         do
-            read -p "Input your ${columns_names[$i]}> " cell
+            read -p "Input your ${columns_names[$i]}> " cellValue
 
             if [[ ${columns_types[$i]} == INT ]]
             then
-                if [[ $cell =~ ^[0-9]+$ ]]
+                if [[ $cellValue =~ ^[0-9]+$ ]]
                     then
                         if [ $i -eq `expr $pkColNum - 1` ]
                             then
-                                # check_id $name $pkColNum $
-                                # res=$?
-                                if [ `cut -d $DELIMITER -f $pkColNum $name | grep $cell` ]
+                            if (( `cut -d$DELIMITER -f $pkColNum $name | grep $cellValue | wc -l` > 0 ))
                                     then
                                         echo "Enter another primary key please."
                                         i=$i-1
                                         continue
                                 else
-                                    new_record+=($cell)
+                                    new_record+=($cellValue)
                                     echo "NUMBER"
                                 fi
                             else
-                                new_record+=($cell)
+                                new_record+=($cellValue)
                                 echo "NUMBER"
                         fi
                 else
@@ -50,23 +48,21 @@ function insertIntoTable(){
                 fi
             elif [[ ${columns_types[$i]} == STRING ]]
             then
-                if [[ $cell =~ ^[a-zA-Z]+$ ]]
+                if [[ $cellValue =~ ^[a-zA-Z]+$ ]]
                 then
                     if [ $i -eq `expr $pkColNum - 1` ] 
                         then
-                            # check_id $name $pkColNum $
-                            # res=$?
-                            if [ `cut -d $DELIMITER -f $pkColNum $name | grep $cell` ]
+                            if (( `cut -d$DELIMITER -f $pkColNum $name | grep $cellValue | wc -l` > 0 ))
                                 then
                                     echo "Enter another primary key please."
                                     i=$i-1
                                     continue
                             else
-                                new_record+=($cell)
+                                new_record+=($cellValue)
                                 echo "String"
                             fi
                         else
-                            new_record+=($cell)
+                            new_record+=($cellValue)
                             echo "String"
                     fi
                 else
@@ -76,23 +72,21 @@ function insertIntoTable(){
                 fi
             elif [[ ${columns_types[$i]} == "DATE" ]]
             then
-                if [[ $cell ==  $(date -d $cell '+%Y-%m-%d') ]]
+                if [[ $cellValue ==  $(date -d $cellValue '+%Y-%m-%d') ]]
                 then
                     if [ $i -eq `expr $pkColNum - 1` ]
                         then
-                            # check_id $name $pkColNum $
-                            # res=$?
-                            if [ `cut -d $DELIMITER -f $pkColNum $name | grep $cell` ]
+                            if (( `cut -d$DELIMITER -f $pkColNum $name | grep $cellValue | wc -l` > 0 ))
                                 then
                                     echo "Enter another primary key please."
                                     i=$i-1
                                     continue
                             else
-                                new_record+=($cell)
+                                new_record+=($cellValue)
                                 echo "Date"
                             fi
                         else
-                            new_record+=($cell)
+                            new_record+=($cellValue)
                             echo "Date"
                     fi
                 else
