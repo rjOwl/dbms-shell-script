@@ -10,8 +10,8 @@ columnNames=""
 columnDatatype=""
 
 #function to check if the table is exist
-function checkOnTable(){
-	read -p "please insert table name: " tableName
+function thisCheckOnTable(){
+	read -p "please insert table name DUDE: " tableName
 	while [ -f $tableName ] 
 	do
 		echo -e "\e[31mThe table name already exist, please insert another name.\e[0m"
@@ -124,7 +124,7 @@ function getPrimaryKey(){
 #function to create new table in current database
 function createTable() {
 	clear
-	checkOnTable
+	thisCheckOnTable
 	while [[ $endCreationFlag == 1 ]]
 	do
 
@@ -155,4 +155,3 @@ function createTable() {
 		fi		 
 	done
 }
-createTable

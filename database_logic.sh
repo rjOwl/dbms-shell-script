@@ -2,7 +2,7 @@
 
 . ddl.sh
 . dml.sh
-
+. table-menu.sh
 
 function createNewDatabase(){
 	echo ------------------------------------------------------------------------
@@ -47,67 +47,67 @@ function listDatabases () {
 	echo ------------------------------------------------------------------------
 }
 
-function tableMenu(){
-	select userChoice in $'Create Table 
-2) List Tables
-3) Drop Table
-4) Insert into Table
-5) Select From Table
-6) Delete From Table
-7) Update Table
-8) Return
-	'
-	do
-	case $REPLY in
-		2) listTables ;;
-		4) 
-			read -p "Table name> " table_name
-			tableExists $table_name
-			tExists=$?
-			echo "TABLE: $tExists"
-			if [ $tExists -eq 255 ]
-				then
-					echo -e "\e[31mTable not found!\e[0m"
-				else
-					read -p "Columns> " columns
-					g=($columns)
-					length="${#g[@]}"
-					if (( $length < 4 ))
-						then
-							echo -e "\e[31mBad columns! $length" 
-					else
-						insertInto $table_name $columns
-					fi
-			fi
-			;;
-		5) 
-		read -p "Table name> " table_name
-		read -p "Columns [defualt is *]> " columns
-		if [ -z $columns ]
-			then
-			echo "*************************************EMPTY"
-				columns="*"
-		fi
-		selectFrom $table_name $columns
-		;;
-		8)
-			cd ..
-			break
-			;;
-		*) echo -e "\e[31mWrong choice! please choose from the above choices.\e[0m"
-			echo ------------------------------------------------------------------------ ;;
-		esac
-		echo $'1) Create Table 
-2) List Tables
-3) Drop Table
-4) Insert into Table
-5) Select From Table
-6) Delete From Table
-7) Update Table
-8) Return
-	'
-	done
-}
+# function tableMenu(){
+# 	select userChoice in $'Create Table 
+# 2) List Tables
+# 3) Drop Table
+# 4) Insert into Table
+# 5) Select From Table
+# 6) Delete From Table
+# 7) Update Table
+# 8) Return
+# 	'
+# 	do
+# 	case $REPLY in
+# 		2) listTables ;;
+# 		4) 
+# 			read -p "Table name> " table_name
+# 			tableExists $table_name
+# 			tExists=$?
+# 			echo "TABLE: $tExists"
+# 			if [ $tExists -eq 255 ]
+# 				then
+# 					echo -e "\e[31mTable not found!\e[0m"
+# 				else
+# 					read -p "Columns> " columns
+# 					g=($columns)
+# 					length="${#g[@]}"
+# 					if (( $length < 4 ))
+# 						then
+# 							echo -e "\e[31mBad columns! $length" 
+# 					else
+# 						insertInto $table_name $columns
+# 					fi
+# 			fi
+# 			;;
+# 		5) 
+# 		read -p "Table name> " table_name
+# 		read -p "Columns [defualt is *]> " columns
+# 		if [ -z $columns ]
+# 			then
+# 			echo "*************************************EMPTY"
+# 				columns="*"
+# 		fi
+# 		selectFrom $table_name $columns
+# 		;;
+# 		8)
+# 			cd ..
+# 			break
+# 			;;
+# 		*) echo -e "\e[31mWrong choice! please choose from the above choices.\e[0m"
+# 			echo ------------------------------------------------------------------------ ;;
+# 		esac
+# 		echo $'1) Create Table 
+# 2) List Tables
+# 3) Drop Table
+# 4) Insert into Table
+# 5) Select From Table
+# 6) Delete From Table
+# 7) Update Table
+# 8) Return
+# 	'
+# 	done
+# }
 
 
 function connectDb(){
@@ -120,7 +120,7 @@ function connectDb(){
     then
         useDb $db_name
         echo -e "[] Connection established"
-		tables;
+		tableMenu;
     else echo -e "\033[31m[X]\e[0m Database dosen't exist!"
     fi
 	echo "  "

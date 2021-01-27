@@ -1,4 +1,5 @@
 #!/bin/bash
+. database_logic.sh
 
 if [ ! -d Database-schema ]
 then

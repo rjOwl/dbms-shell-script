@@ -67,6 +67,6 @@ function deleteFromTable() {
 	fi
 }
 
-deleteFromTable
+
 
 
