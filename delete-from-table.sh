@@ -14,7 +14,7 @@ function checkOnTable(){
 }
 
 #function to get the column that will be used to delete the record
-function selectColumnFromTable(){
+function delSelectColumnFromTable(){
 	typeset -i index=1
 	echo "please select on column to search for: "
 	#loop to show columns name to the user
@@ -47,7 +47,7 @@ function deleteFromTable() {
 	clear
 	checkOnTable
 	columsNameArray=`sed -n '1p' .$tableName | sed "s/$DELIMITER/ /g"`
-	selectColumnFromTable
+	delSelectColumnFromTable
 	read -p "Please enter the value to search for: " searchValue
 	replaceLocations=`awk -v searchColumn=$searchColumn -v searchValue=$searchValue -v delimiter=$DELIMITER 'BEGIN{FS=delimiter} { if($searchColumn == searchValue){ print NR," "}}' $tableName`
 	typeset -i index=0
