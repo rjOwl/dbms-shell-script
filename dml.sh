@@ -101,6 +101,25 @@ function insertIntoTable(){
     echo ${new_record[@]}$EOF | tr " " $DELIMITER >> $name
 }
 
+function selectFromTable(){
+    local -n query=$1
+    local -n columns=$2
+    local table=$3
+    local meta=.$3
+    local length=${#query[@]}
+
+    for (( i=0; i<$length; i++ ))
+        do
+        if [[ ${columns[@]} =~ ${query[$i]} ]]
+            then
+                field=`sed -n $'1s/;/\\\n/gp' $meta | grep -nx ${query[$i]} | cut -d':' -f1`
+                cut -d';' -f $field $table
+                # printf "%-10s%-5s\n" ${query[$i]}
+                # printf "%-5s\n" ${query[$i]}
+        fi
+    done
+}
+
 function tableExists(){
     if [ -f $1 ]
     then 

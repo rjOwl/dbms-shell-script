@@ -1,7 +1,8 @@
 #!/bin/bash
 
 #variables section
-DELIMITER=";;"
+. globals.sh
+
 typeset -i endCreationFlag=1
 typeset -i numberOfcolumn=0
 typeset -i columnPrimaryKey=0
