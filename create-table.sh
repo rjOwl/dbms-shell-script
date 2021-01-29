@@ -4,15 +4,15 @@
 . globals.sh
 
 typeset -i endCreationFlag=1
-typeset -i numberOfcolumn=0
-typeset -i columnPrimaryKey=0
-typeset -i printLine=0
+typeset -i numberOfcolumnCreation=0
+typeset -i columnPrimaryKeyCreation=0
+typeset -i printLineCreation=0
 columnNames=""
 columnDatatype=""
 
 #function to check if the table is exist
-function thisCheckOnTable(){
-	read -p "please insert table name DUDE: " tableName
+function thisCheckOnTableCreation(){
+	read -p "please insert table name to be created: " tableName
 	while [ -f $tableName ] 
 	do
 		echo -e "\e[31mThe table name already exist, please insert another name.\e[0m"
@@ -22,7 +22,7 @@ function thisCheckOnTable(){
 
 #function to create table in new file if the user insertion has been finished with number of columns 
 function saveTable(){
-	if [ $numberOfcolumn -eq 0 ]
+	if [ $numberOfcolumnCreation -eq 0 ]
 	then
 		echo -e "\e[31mNo column in the table, so this table will not be created.\e[0m"
 		read -p "Are you sure that you want to cancel the table creation process [Y/n]: " SureChoice
@@ -37,15 +37,16 @@ echo $SureChoice
 		touch $tableName
 		echo $columnNames >> .$tableName
 		echo $columnDatatype >> .$tableName
-		echo $columnPrimaryKey >> .$tableName
+		echo $columnPrimaryKeyCreation >> .$tableName
+		echo -e "\e[32mthe $tableName has been created successfully.\e[0m"
 		echo "----------------------------------------------------------------------------"
 		endCreationFlag=0
 	fi
 }
 
 #add Delimiter between columns after the first column
-function addDelimiterToRecord(){
-	if [[ $numberOfcolumn != 0 ]]
+function addDelimiterToRecordCreation(){
+	if [[ $numberOfcolumnCreation != 0 ]]
 	then
 		columnNames+=$DELIMITER
 		columnDatatype+=$DELIMITER
@@ -53,11 +54,11 @@ function addDelimiterToRecord(){
 }
 
 #show the last columns with datatype to the user while adding new column.
-function tableView(){
-	if [[ $numberOfcolumn != 0 ]]
+function tableViewCreation(){
+	if [[ $numberOfcolumnCreation != 0 ]]
 	then
 		typeset -i j=0
-		while [ $j -lt $printLine ] 
+		while [ $j -lt $printLineCreation ] 
 		do
 			printf "-"
 			let "j++"
@@ -69,7 +70,7 @@ function tableView(){
 		done
 		echo " "
 		j=0
-		while [ $j -lt $printLine ]
+		while [ $j -lt $printLineCreation ]
 		do
 			printf "-"
 			let "j++"
@@ -79,7 +80,7 @@ function tableView(){
 }
 
 #ask the user to insert valid datatype (INT - STRING - DATE) for the new record
-function getColumnDatatype(){
+function getColumnDatatypeCreation(){
 	while true
 	do
 		echo "1) Integar."
@@ -106,26 +107,27 @@ function getColumnDatatype(){
 		fi
 	done
 	#calculation on column name and datatype to print the table view next step
-	(( printLine = $printLine + 5 + ${#newColumnName} + ${#Type} ))
-	arrayOfColumnName[${numberOfcolumn}]="$newColumnName$Type"
+	(( printLineCreation = $printLineCreation + 5 + ${#newColumnName} + ${#Type} ))
+	arrayOfColumnName[${numberOfcolumnCreation}]="$newColumnName$Type"
 }
 
 #ask the user about the primary key
-function getPrimaryKey(){
-	if [[ $columnPrimaryKey == 0 ]]
+function getPrimaryKeyCreation(){
+	if [[ $columnPrimaryKeyCreation == 0 ]]
 	then
-		read -p "Do you want this key to be your primary key [Y/n]: " newColumnPrimaryKey
-		if [ $newColumnPrimaryKey != N -a $newColumnPrimaryKey != n ]
+		read -p "Do you want this key to be your primary key [Y/n]: " newcolumnPrimaryKeyCreation
+		if [ $newcolumnPrimaryKeyCreation != N -a $newcolumnPrimaryKeyCreation != n ]
 		then 
-			(( columnPrimaryKey = numberOfcolumn ))			
+			(( columnPrimaryKeyCreation = numberOfcolumnCreation ))			
 		fi
 	fi
 }
 
 #function to create new table in current database
 function createTable() {
-	clear
-	thisCheckOnTable
+	#clear
+	echo ----------------------------------------------------------------------------
+	thisCheckOnTableCreation
 	while [[ $endCreationFlag == 1 ]]
 	do
 
@@ -137,13 +139,13 @@ function createTable() {
 		read -p "please insert your choice: " userChoice
 		if [[ $userChoice == 1 ]]
 		then
-			addDelimiterToRecord
-			tableView
+			addDelimiterToRecordCreation
+			tableViewCreation
 			read -p "please insert new column name: " newColumnName
 			columnNames+=$newColumnName
-			getColumnDatatype
-			let "numberOfcolumn++"
-			getPrimaryKey
+			getColumnDatatypeCreation
+			let "numberOfcolumnCreation++"
+			getPrimaryKeyCreation
 		elif [[ $userChoice == 2 ]]
 		then
 			saveTable

@@ -7,6 +7,7 @@ function insertIntoTable(){
     # get number of columns
     # get the types
     # check primary key
+    #echo ----------------------------------------------------------------------------
     local name=$1
     local length=$(head -n 1 .$name | tr $DELIMITER ' ' | wc -w)
     local columns_names=($(head -n 1 .$name | tr $DELIMITER ' '))
@@ -14,12 +15,12 @@ function insertIntoTable(){
     local pkColNum=$(tail -n 1 .$name )
     # echo $length ${columns_names[1]} ${columns_types[1]} $pkColNum
     local new_record=()
-    echo -----------------------------------------
+    printTableColums=`head -n 1 .$name`
+    #echo -----------------------------------------
     echo "-----------------$name----------------"
-    echo ${columns_names[@]}
-    echo -----------------------------------------
-    for (( i=0; i<$length; i++ ))
-        do
+    tableView $printTableColums $DELIMITER
+    for (( i=0; $i < $length; i++ ))
+    do
             read -p "Input your ${columns_names[$i]}> " cellValue
 
             if [[ ${columns_types[$i]} == INT ]]
@@ -99,6 +100,7 @@ function insertIntoTable(){
             fi
         done
     echo ${new_record[@]}$EOF | tr " " $DELIMITER >> $name
+    echo ----------------------------------------------------------------------------
 }
 
 function selectFromTable(){
@@ -131,7 +133,8 @@ function tableExists(){
 
 
 function listTables(){
-    ls -1 .
+    	ls -1 .
+	echo ----------------------------------------------------------------------------
 }
 
 function renameTable(){
@@ -139,6 +142,8 @@ function renameTable(){
     new_name=$2
     mv $tableName $new_name
     mv .$tableName .$new_name
+    echo -e "\e[32mDONE\e[0m"
+    echo ----------------------------------------------------------------------------
 }
 
 function dropTable(){
@@ -146,10 +151,12 @@ function dropTable(){
     tableExists $1 
     t=$?
     if [ $t -eq 1 ]
-        then
+    then
         mv $1 .$1 .trash
+	echo -e "\e[32mDONE\e[0m"
     else echo "Table is not found"
     fi
+    echo ----------------------------------------------------------------------------
 }
 
 function selectFrom(){

@@ -29,7 +29,7 @@ function deleteFromTable() {
 	#check if any record matched.
 	if [[ ${#replaceLocations} == 0 ]]
 	then
-		echo No matched record.
+		echo -e "\e[31mNo matched record.\e[0m"
 	else
 		#loop to delete all records that matched with the user input.
 		for i in $replaceLocations
@@ -39,6 +39,7 @@ function deleteFromTable() {
 			echo the record has been deleted.
 			let "index++"
 		done 
+		echo -e "\e[32mdelete record(s) has finished successfully.\e[0m"
 	fi
 }
 

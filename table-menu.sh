@@ -4,17 +4,17 @@
 . ./create-table.sh
 . ./delete-from-table.sh
 . ./update-table.sh
-. dml.sh
+. ./dml.sh
 
 function tableMenu() {
 clear
 echo instructions here
 echo ----------------------------------------------------------------------------
 PS3="Please inser your choice: "
-select tableChoice in $'Create Table.zz\n2) List Tables.\n3) Drop Table.\n4) Insert into Table.\n5) Select From Table.\n6) Delete From Table.\n7) Update Table.\n8) return to database schema to change used database.'
+select tableChoice in $'Create Table.\n2) List Tables.\n3) Drop Table.\n4) Insert into Table.\n5) Select From Table.\n6) Delete From Table.\n7) Update Table.\n8) return to database schema to change used database.'
 do
 	case $REPLY in
-		1) createTable;;
+		1) createTable ;;
 		2) listTables ;;
 		3) read -p "Table name to drop> " table_name
 			dropTable $table_name
@@ -42,8 +42,9 @@ do
 			;;
 		6) deleteFromTable ;;
 		7) updateTable ;;
-		8) echo to 'return' to schema Sto change database
-		   cd ;;
+		8) echo to 'return' to schema to change database
+		   cd ..
+		   break ;;
 	    	*) echo -e "\e[31mWrong choice! please choose from the above choices.\e[0m"
 		   echo ------------------------------------------------------------------------ ;;
 	esac
