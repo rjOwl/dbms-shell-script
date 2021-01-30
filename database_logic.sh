@@ -13,7 +13,7 @@ function createNewDatabase(){
 		#typeset -i checkOnDatabase=`find $newDatabaseName 2> /dev/null | wc -l`
 		dbExist $newDatabaseName
 		checkOnDatabase=$?
-		if [ $checkOnDatabase -eq 1  ]
+		if [ $checkOnDatabase -eq 1 ]
 		then
 			echo -e "\e[31mThis database already exist, please rewrite the name.\e[0m"
 		elif  [[ $newDatabaseName == $EOF ]]
@@ -55,7 +55,7 @@ function connectDb(){
     read -p "DB name> " db_name
     dbExist $db_name
     dbExist=$?
-    if [ $dbExist -eq 1 ]
+    if [ $dbExist -eq 1 -a ${#db_name} -gt 0 ]
     then
         useDb $db_name
         echo -e "[] Connection established"
