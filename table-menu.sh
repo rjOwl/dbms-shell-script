@@ -1,11 +1,11 @@
 #!/bin/bash
 
 #interface with tables.
-. ./create-table.sh
-. ./delete-from-table.sh
-. ./update-table.sh
-. ./dml.sh
-. ./select-from-table.sh
+. create-table.sh
+. delete-from-table.sh
+. update-table.sh
+. dml.sh
+. select-from-table.sh
 
 function tableMenu() {
 clear
@@ -17,19 +17,15 @@ do
 	case $REPLY in
 		1) createTable ;;
 		2) listTables ;;
-		3) read -p "Table name to drop> " table_name
-			dropTable $table_name
-			;;
-		4) read -p "Table name to insert into> " table_name
-			insertIntoTable $table_name
-		;;
+		3) dropTable;;
+		4) insertIntoTable;;
 		5) selectFromTable ;;
 		6) deleteFromTable ;;
 		7) updateTable ;;
 		8) echo to 'return' to schema to change database
 		   cd ..
 		   break ;;
-	    	*) echo -e "\e[31mWrong choice! please choose from the above choices.\e[0m"
+		*) echo -e "\e[31mWrong choice! please choose from the above choices.\e[0m"
 		   echo ------------------------------------------------------------------------ ;;
 	esac
 	echo $'1) Create Table.\n2) List Tables.\n3) Drop Table.\n4) Insert into Table.\n5) Select From Table.\n6) Delete From Table.\n7) Update Table.\n8) return to database schema to change used database.'
