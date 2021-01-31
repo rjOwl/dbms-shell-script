@@ -13,8 +13,7 @@ echo ------------------------------------------------------------------------
 
 PS3="please enter your choice: "
 select userChoice in $'Create Database.\n2) List Database.\n3) Connect to Databases.\n4) Drop Database.\n5) Exit.'
-do
-case $REPLY in
+do case $REPLY in
     1) createNewDatabase ;;
     2) listDatabases ;;
     3) connectDb ;;
