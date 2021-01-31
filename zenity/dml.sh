@@ -3,12 +3,13 @@
 . globals.sh
 
 function insertIntoTable(){
+read -p "Table name to insert into> " table_name
     # takes table name and that's it
     # get number of columns
     # get the types
     # check primary key
     #echo ----------------------------------------------------------------------------
-    local name=$1
+    local name=$table_name
     local length=$(head -n 1 .$name | tr $DELIMITER ' ' | wc -w)
     local columns_names=($(head -n 1 .$name | tr $DELIMITER ' '))
     local columns_types=($(head -n 2 .$name | tail -n 1 | tr $DELIMITER ' '))
@@ -114,8 +115,10 @@ function tableExists(){
 
 
 function listTables(){
-    	ls -1 .
-	echo ----------------------------------------------------------------------------
+	zenity --list \
+	--title="List of Databases" \
+	--column="Tables Names" \
+	`ls -1`
 }
 
 function renameTable(){
@@ -123,32 +126,18 @@ function renameTable(){
     new_name=$2
     mv $tableName $new_name
     mv .$tableName .$new_name
-    echo -e "\e[32mDONE\e[0m"
-    echo ----------------------------------------------------------------------------
+    zenity --notification --title="Rename Table" --text="Done"
 }
 
 function dropTable(){
-    # takes table 
-    tableExists $1 
+    table_name=`zenity --entry --title="Drop Table" --text='Insert table name to drop'`
+    tableExists $table_name
     t=$?
     if [ $t -eq 1 ]
     then
-        mv $1 .$1 .trash
-	echo -e "\e[32mDONE\e[0m"
-    else echo "Table is not found"
+        mv $1 .$table_name .trash
+	zenity --notification --title="Drop Table" --text="Done."
+    else 
+	zenity --warning --title="Drop Table" --text="Table is not found"
     fi
-    echo ----------------------------------------------------------------------------
 }
-
-function selectFrom(){
-    # default all
-    local table_name=$1
-    local columns=$2
-    if [[ $columns = '*' ]]
-        then
-            echo "************************************3aaaaaaaaaa"
-            cat $table_name
-    else
-        awk -F\'$DELIMITER\' "{if($1 == $columns) print $0}" $table_name
-    fi
-}3

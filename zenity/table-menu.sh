@@ -8,30 +8,36 @@
 . ./select-from-table.sh
 
 function tableMenu() {
-clear
-echo instructions here
-echo ----------------------------------------------------------------------------
-PS3="Please inser your choice: "
-select tableChoice in $'Create Table.\n2) List Tables.\n3) Drop Table.\n4) Insert into Table.\n5) Select From Table.\n6) Delete From Table.\n7) Update Table.\n8) return to database schema to change used database.'
+while true
 do
-	case $REPLY in
+	tableChoice=`zenity --entry --title="Table Options" --text='1) Create Table.\n2) List Tables.\n3) Drop Table.\n4) Insert into Table.\n5) Select From Table.\n6) Delete From Table.\n7) Update Table.\n8) return to database schema to change used database.'`
+	if [[ $? -eq 1 ]]
+	then
+		break
+	fi
+	case tableChoice in
 		1) createTable ;;
 		2) listTables ;;
-		3) read -p "Table name to drop> " table_name
-			dropTable $table_name
-			;;
-		4) read -p "Table name to insert into> " table_name
-			insertIntoTable $table_name
-		;;
+		3) dropTable ;;
+		4) insertIntoTable ;;
 		5) selectFromTable ;;
 		6) deleteFromTable ;;
 		7) updateTable ;;
 		8) echo to 'return' to schema to change database
 		   cd ..
 		   break ;;
-	    	*) echo -e "\e[31mWrong choice! please choose from the above choices.\e[0m"
-		   echo ------------------------------------------------------------------------ ;;
+
+		"Create Table") createTable ;;
+		"List Tables") listTables ;;
+		"Drop Table") dropTable ;;
+		"Insert into Table") insertIntoTable ;;
+		"Select From Table") selectFromTable ;;
+		"Delete From Table") deleteFromTable ;;
+		"Update Table") updateTable ;;
+		"return") echo to 'return' to schema to change database
+		   cd ..
+		   break ;;
+	    	*) zenity --warning --title="Table Options" --text="Wrong choice! please choose from the above choices."
 	esac
-	echo $'1) Create Table.\n2) List Tables.\n3) Drop Table.\n4) Insert into Table.\n5) Select From Table.\n6) Delete From Table.\n7) Update Table.\n8) return to database schema to change used database.'
 done
 }
