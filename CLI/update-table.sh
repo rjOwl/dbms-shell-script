@@ -6,7 +6,7 @@
 typeset -i index=1
 
 # function to put the column names and column datatype in array to display them to the user to select from them
-function getColumnNamesAndDatatypeInArrays(){
+function getColumnNamesAndDatatypeInArraysInUpdate(){
 	columnNameInFile=`sed -n '1p' .$tableName | sed "s/$DELIMITER/ /g"`
 	columnDatatypeInFile=`sed -n '2p' .$tableName | sed "s/$DELIMITER/ /g"`
 	columnPrimaryKey=`sed -n '3p' .$tableName`
@@ -79,7 +79,7 @@ function updateTable() {
 	echo ------------------------------------------------------------------------ 
 	checkOnTable
 	echo "please select on column to search for: "
-	getColumnNamesAndDatatypeInArrays
+	getColumnNamesAndDatatypeInArraysInUpdate
 	selectColumnFromTable
 	read -p "Please enter the value to search for: " searchValue
 	numberOfMatchedRows=`awk -v searchColumn=$searchColumn -v searchValue=$searchValue -v delimiter=$DELIMITER 'BEGIN{FS=delimiter} { if($searchColumn == searchValue){ print NR}}' $tableName`

@@ -80,7 +80,7 @@ function dropTable(){
     t=$?
     if [ $t -eq 1 ]
     then
-        mv $1 .$1 .trash
+        mv $table_name .$table_name .trash
 	echo -e "\e[32mDONE\e[0m"
     else echo "Table is not found"
     fi
