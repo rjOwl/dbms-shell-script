@@ -7,17 +7,19 @@ function insertIntoTable(){
     # get number of columns
     # get the types
     # check primary key
-    #echo ----------------------------------------------------------------------------
+    echo ----------------------------------------------------------------------------
     read -p "Table name to insert into> " name
-    # local name=$1
+    until [ -f $name ] 
+    do
+    	    echo -e "\e[31mNo such table name in this database.\e[0m"
+	    read -p "Table name to insert into> " name
+    done
     local length=$(head -n 1 .$name | tr $DELIMITER ' ' | wc -w)
     local columns_names=($(head -n 1 .$name | tr $DELIMITER ' '))
     local columns_types=($(head -n 2 .$name | tail -n 1 | tr $DELIMITER ' '))
     local pkColNum=$(tail -n 1 .$name )
-    # echo $length ${columns_names[1]} ${columns_types[1]} $pkColNum
     local new_record=()
     printTableColums=`head -n 1 .$name`
-    #echo -----------------------------------------
     echo "-----------------$name----------------"
     tableView $printTableColums $DELIMITER
     for (( i=0; $i < $length; i++ ))
@@ -85,15 +87,3 @@ function dropTable(){
     echo ----------------------------------------------------------------------------
 }
 
-function selectFrom(){
-    # default all
-    local table_name=$1
-    local columns=$2
-    if [[ $columns = '*' ]]
-        then
-            echo "************************************3aaaaaaaaaa"
-            cat $table_name
-    else
-        awk -F\'$DELIMITER\' "{if($1 == $columns) print $0}" $table_name
-    fi
-}

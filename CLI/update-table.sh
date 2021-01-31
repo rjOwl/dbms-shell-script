@@ -25,29 +25,6 @@ function getColumnNamesAndDatatypeInArrays(){
 	done
 }
 
-
-# Disply the Old record values that will be updated.
-#function tableViewUpdate(){
-#	local printLine=`echo $1 | sed "s/;/ | /g"`
-#	echo THE OLD RECORD
-#	(( length = ${#printLine} + 4 ))
-#		typeset -i j=0
-#		while [ $j -lt $length ] 
-#		do
-#			printf "-"
-#			let "j++"
-#		done
-#		echo " "
-#		echo '| '$printLine' |'
-#		j=0
-#		while [ $j -lt $length  ]
-#		do
-#			printf "-"
-#			let "j++"
-#		done
-#		echo " "
-#}
-
 # check if the user inserts duplicated primary key. 
 function checkOnPrimaryKey(){
 	currentValueOfPrimaryKey=`echo $1 | cut -f$columnPrimaryKey -d$DELIMITER`
@@ -99,7 +76,7 @@ function replaceRecordInTable(){
 
 #function to update old records with new records
 function updateTable() {
-	clear
+	echo ------------------------------------------------------------------------ 
 	checkOnTable
 	echo "please select on column to search for: "
 	getColumnNamesAndDatatypeInArrays
@@ -126,7 +103,8 @@ function updateTable() {
 			replaceRecordInTable $j
 		done
 		echo -e "\e[32mThe table has been updated.\e[0m"
-	fi		
+	fi	
+	echo ------------------------------------------------------------------------ 	
 }
 
 

@@ -35,7 +35,7 @@ function listDatabases () {
 	typeset databaseList=`ls | wc -l`
 	if [ $databaseList -eq 0 ]
 	then 
-		zenity --warning --title="List of Databases" --text="No Database exists yet."
+		zenity --warning --title="List of Databases" --width="500" --height="100" --text="No Database exists yet."
 	else
 		zenity --list \
 		  --title="List of Databases" \
@@ -56,7 +56,7 @@ function connectDb(){
 	zenity --notification --title="Drop Database" --text="[] Connection established"
 	tableMenu;
     else
-	zenity --warning --title="List of Databases" --text=" Database dosen't exist!"
+	zenity --warning --title="List of Databases" --width="500" --height="100" --text=" Database dosen't exist!"
     fi
 }
 
@@ -74,7 +74,7 @@ function dropDb(){
 		        rm "-dr" $db_name
 			zenity --notification --title="Drop Database" --text="Empty schema.\nDatabase has been dropped successfully."
 		else
-			zenity --question --title="Drop Database" --ok-label="Yes" --cancel-label="No" --text="Database is not empty. Do you want to remove the database with its tables?"
+			zenity --question --title="Drop Database" --width="500" --height="100" --ok-label="Yes" --cancel-label="No" --text="Database is not empty. Do you want to remove the database with its tables?"
 		        if [[ $? == 0 ]]
 		            then 
 		                rm "-dr" $db_name
@@ -82,7 +82,7 @@ function dropDb(){
 		        fi
 		fi
 	else
-		zenity --warning --title="List of Databases" --text="No Database with this name."
+		zenity --warning --title="List of Databases" --width="500" --height="100" --text="No Database with this name."
 	fi
 }
 

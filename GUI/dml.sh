@@ -78,9 +78,9 @@ function dropTable(){
     t=$?
     if [ $t -eq 1 ]
     then
-        mv $1 .$table_name .trash
+        mv $table_name .$table_name .trash
 	zenity --notification --title="Drop Table" --text="Done."
     else 
-	zenity --warning --title="Drop Table" --text="Table is not found"
+	zenity --warning --title="Drop Table" --width="500" --height="100" --text="Table is not found"
     fi
 }

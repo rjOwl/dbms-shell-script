@@ -40,21 +40,19 @@ function selectColumnFromTable(){
 function tableView(){
 	local printLine=`echo $1 | sed "s/$2/ | /g"`
 	(( lineLength = ${#printLine} + 4 ))
-
-
-		typeset -i j=0
-		while [ $j -lt $lineLength ] 
-		do
-			printf "-"
-			let "j++"
-		done
-		echo " "
-		echo '| '$printLine' |'
-		j=0
-		while [ $j -lt $lineLength  ]
-		do
-			printf "-"
-			let "j++"
-		done
-		echo " "
+	typeset -i j=0
+	while [ $j -lt $lineLength ] 
+	do
+		printf "-"
+		let "j++"
+	done
+	echo " "
+	echo '| '$printLine' |'
+	j=0
+	while [ $j -lt $lineLength  ]
+	do
+		printf "-"
+		let "j++"
+	done
+	echo " "
 }

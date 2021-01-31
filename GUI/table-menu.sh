@@ -15,7 +15,7 @@ do
 	then
 		break
 	fi
-	case tableChoice in
+	case $tableChoice in
 		1) createTable ;;
 		2) listTables ;;
 		3) dropTable ;;
@@ -37,7 +37,7 @@ do
 		"return") echo to 'return' to schema to change database
 		   cd ..
 		   break ;;
-	    	*) zenity --warning --title="Table Options" --text="Wrong choice! please choose from the above choices."
+	    	*) zenity --warning --title="Table Options" --width="500" --height="100" --text="Wrong choice! please choose from the above choices."
 	esac
 done
 }

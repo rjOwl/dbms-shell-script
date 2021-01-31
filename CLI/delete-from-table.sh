@@ -19,7 +19,7 @@ function delSelectColumnFromTable(){
 
 #function to delete record from the table.
 function deleteFromTable() {
-	clear
+	echo ------------------------------------------------------------------------ 
 	checkOnTable
 	columsNameArray=`sed -n '1p' .$tableName | sed "s/$DELIMITER/ /g"`
 	delSelectColumnFromTable
@@ -41,6 +41,7 @@ function deleteFromTable() {
 		done 
 		echo -e "\e[32mdelete record(s) has finished successfully.\e[0m"
 	fi
+	echo ------------------------------------------------------------------------ 
 }
 
 

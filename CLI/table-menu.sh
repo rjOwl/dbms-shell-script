@@ -9,7 +9,6 @@
 
 function tableMenu() {
 clear
-echo instructions here
 echo ----------------------------------------------------------------------------
 PS3="Please inser your choice: "
 select tableChoice in $'Create Table.\n2) List Tables.\n3) Drop Table.\n4) Insert into Table.\n5) Select From Table.\n6) Delete From Table.\n7) Update Table.\n8) return to database schema to change used database.'

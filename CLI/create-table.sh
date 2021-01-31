@@ -26,7 +26,6 @@ function saveTable(){
 	then
 		echo -e "\e[31mNo column in the table, so this table will not be created.\e[0m"
 		read -p "Are you sure that you want to cancel the table creation process [Y/n]: " SureChoice
-echo $SureChoice
 		if [ $SureChoice != N -a $SureChoice != n ]
 		then 
 			endCreationFlag=0
@@ -125,9 +124,8 @@ function getPrimaryKeyCreation(){
 
 #function to create new table in current database
 function createTable() {
-	#clear
-	echo ----------------------------------------------------------------------------
 	thisCheckOnTableCreation
+	endCreationFlag=1;
 	while [[ $endCreationFlag == 1 ]]
 	do
 
