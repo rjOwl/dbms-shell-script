@@ -3,13 +3,13 @@
 . globals.sh
 
 function insertIntoTable(){
-read -p "Table name to insert into> " table_name
     # takes table name and that's it
     # get number of columns
     # get the types
     # check primary key
     #echo ----------------------------------------------------------------------------
-    local name=$table_name
+    read -p "Table name to insert into> " name
+    # local name=$1
     local length=$(head -n 1 .$name | tr $DELIMITER ' ' | wc -w)
     local columns_names=($(head -n 1 .$name | tr $DELIMITER ' '))
     local columns_types=($(head -n 2 .$name | tail -n 1 | tr $DELIMITER ' '))
@@ -22,84 +22,27 @@ read -p "Table name to insert into> " table_name
     tableView $printTableColums $DELIMITER
     for (( i=0; $i < $length; i++ ))
     do
-            read -p "Input your ${columns_names[$i]}> " cellValue
-
-            if [[ ${columns_types[$i]} == INT ]]
-            then
-                if [[ $cellValue =~ ^[0-9]+$ ]]
+        read -p "Input your ${columns_names[$i]}> " cellValue
+        if [[ ( ${columns_types[$i]} == INT && $cellValue =~ ^[0-9]+$ )|| ( ${columns_types[$i]} == STRING )|| ( ${columns_types[$i]} == "DATE" && $cellValue ==  $(date -d $cellValue '+%Y-%m-%d') ) ]]
+            then 
+                if [ $i -eq `expr $pkColNum - 1` ]
                     then
-                        if [ $i -eq `expr $pkColNum - 1` ]
+                    if (( `cut -d$DELIMITER -f $pkColNum $name | grep $cellValue | wc -l` > 0 ))
                             then
-                            if (( `cut -d$DELIMITER -f $pkColNum $name | grep $cellValue | wc -l` > 0 ))
-                                    then
-                                        echo "Enter another primary key please."
-                                        i=$i-1
-                                        continue
-                                else
-                                    new_record+=($cellValue)
-                                    echo "NUMBER"
-                                fi
-                            else
-                                new_record+=($cellValue)
-                                echo "NUMBER"
-                        fi
-                else
-                    i=$i-1
-                    echo "Not number"
-                    continue
-                fi
-            elif [[ ${columns_types[$i]} == STRING ]]
-            then
-                if [[ $cellValue =~ ^[a-zA-Z]+$ ]]
-                then
-                    if [ $i -eq `expr $pkColNum - 1` ] 
-                        then
-                            if (( `cut -d$DELIMITER -f $pkColNum $name | grep $cellValue | wc -l` > 0 ))
-                                then
-                                    echo "Enter another primary key please."
-                                    i=$i-1
-                                    continue
-                            else
-                                new_record+=($cellValue)
-                                echo "String"
-                            fi
+                                echo "Enter another primary key please."
+                                i=$i-1
+                                continue
                         else
                             new_record+=($cellValue)
-                            echo "String"
                     fi
                 else
-                    i=$i-1
-                    echo "Not string"
-                    continue
-                fi
-            elif [[ ${columns_types[$i]} == "DATE" ]]
-            then
-                if [[ $cellValue ==  $(date -d $cellValue '+%Y-%m-%d') ]]
-                then
-                    if [ $i -eq `expr $pkColNum - 1` ]
-                        then
-                            if (( `cut -d$DELIMITER -f $pkColNum $name | grep $cellValue | wc -l` > 0 ))
-                                then
-                                    echo "Enter another primary key please."
-                                    i=$i-1
-                                    continue
-                            else
-                                new_record+=($cellValue)
-                                echo "Date"
-                            fi
-                        else
-                            new_record+=($cellValue)
-                            echo "Date"
-                    fi
-                else
-                    i=$i-1
-                    echo "Not date"
-                    continue
+                    new_record+=($cellValue)
                 fi
             else
-                echo "Input a good format please"
-            fi
-        done
+                i=$i-1
+                continue
+        fi
+    done
     echo ${new_record[@]}$EOF | tr " " $DELIMITER >> $name
     echo ----------------------------------------------------------------------------
 }
