@@ -55,27 +55,30 @@ function addDelimiterToRecordCreation(){
 
 #show the last columns with datatype to the user while adding new column.
 function tableViewCreation(){
+	zenityVar=""
 	if [[ $numberOfcolumnCreation != 0 ]]
 	then
 		typeset -i j=0
 		while [ $j -lt $printLineCreation ] 
 		do
-			printf "-"
+			zenityVar+="-"
 			let "j++"
 		done
-		echo " "
+		zenityVar+="\n"
 		for i in ${arrayOfColumnName[*]}
 		do
-			printf "  $i  |"
+			zenityVar+="  $i  |"
 		done
-		echo " "
+		zenityVar+="\n"
 		j=0
 		while [ $j -lt $printLineCreation ]
 		do
-			printf "-"
+			zenityVar+="-"
 			let "j++"
 		done
-		echo " "
+		zenityVar+="\n"
+		zenity --entry --title="last Columns" --text=$zenityVar
+
 	fi
 }
 
@@ -130,7 +133,7 @@ function createTable() {
 	thisCheckOnTableCreation
 	while [[ $endCreationFlag == 1 ]]
 	do
-
+		userChoice=`zenity --entry --title="Creation of new Database" --text='1) Add new column.\n2) Create table with at least one column.\n3) Exit without save.\n'`
 		echo ----------------------------------------------------------------------------
 		echo "1) Add new column."
 		echo "2) Create table with at least one column."

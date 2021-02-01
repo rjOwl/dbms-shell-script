@@ -8,26 +8,37 @@
 . select-from-table.sh
 
 function tableMenu() {
-clear
-echo instructions here
-echo ----------------------------------------------------------------------------
-PS3="Please inser your choice: "
-select tableChoice in $'Create Table.\n2) List Tables.\n3) Drop Table.\n4) Insert into Table.\n5) Select From Table.\n6) Delete From Table.\n7) Update Table.\n8) return to database schema to change used database.'
+while true
 do
-	case $REPLY in
-		1) createTable ;;
-		2) listTables ;;
-		3) dropTable;;
-		4) insertIntoTable;;
-		5) selectFromTable ;;
-		6) deleteFromTable ;;
-		7) updateTable ;;
-		8) echo to 'return' to schema to change database
+	tableChoice=`zenity --list --text "Table Actions"  --radiolist  --column "Pick" --column "Menu" FALSE "Create Table" FALSE "List Tables" FALSE "Drop Table" FALSE "Insert into Table" FALSE "Select From Table" FALSE "Delete From Table" FALSE "Update Table" FALSE "Return"`
+	# tableChoice=`zenity --list --text "Welcome to OurSQL" --radiolist  --column "Pick" --column "Menu"    FALSE "Create Database" FALSE  "List Database" FALSE  "Connect to Databases" FALSE "Drop Database" FALSE "Exit"`
+
+	if [[ $? -eq 1 ]]
+	then
+		break
+	fi
+	case $tableChoice in
+		# 1) createTable ;;
+		# 2) listTables ;;
+		# 3) dropTable ;;
+		# 4) insertIntoTable;;
+		# 5) selectFromTable ;;
+		# 6) deleteFromTable ;;
+		# 7) updateTable ;;
+		# 8) echo 'Return'
+		#    cd ..
+		#    break ;;
+		"Create Table") createTable ;;
+		"List Tables") listTables ;;
+		"Drop Table") dropTable ;;
+		"Insert into Table") insertIntoTable ;;
+		"Select From Table") selectFromTable ;;
+		"Delete From Table") deleteFromTable ;;
+		"Update Table") updateTable ;;
+		"Return")
 		   cd ..
 		   break ;;
-		*) echo -e "\e[31mWrong choice! please choose from the above choices.\e[0m"
-		   echo ------------------------------------------------------------------------ ;;
+		*) zenity --warning --title="Table Options" --text="Wrong choice! please choose from the above choices."
 	esac
-	echo $'1) Create Table.\n2) List Tables.\n3) Drop Table.\n4) Insert into Table.\n5) Select From Table.\n6) Delete From Table.\n7) Update Table.\n8) return to database schema to change used database.'
 done
 }

@@ -7,23 +7,24 @@ then
 fi
 
 cd Database-schema
-echo "                            Welcome to OurSQL"
-echo ------------------------------------------------------------------------
 
-
-PS3="please enter your choice: "
-select userChoice in $'Create Database.\n2) List Database.\n3) Connect to Databases.\n4) Drop Database.\n5) Exit.'
-do case $REPLY in
-    1) createNewDatabase ;;
-    2) listDatabases ;;
-    3) connectDb ;;
-    4) dropDb ;;
-    5) break ;;
-    *) echo -e "\e[31mWrong choice! please choose from the above choices.\e[0m"
-        echo ------------------------------------------------------------------------ ;;
+while true
+do
+	userChoice=`zenity --list --text "Welcome to OurSQL" --radiolist  --column "Pick" --column "Menu"    FALSE "Create Database" FALSE  "List Database" FALSE  "Connect to Databases" FALSE "Drop Database" FALSE "Exit"`
+	echo $?
+	if [[ $? -eq 1 ]]
+	then
+		break
+	fi
+	case $userChoice in
+	    "Create Database") createNewDatabase ;;
+	    "List Database") listDatabases ;;
+	    "Connect to Databases") connectDb ;;
+	    "Drop Database") dropDb ;;
+	    "Exit") break;
 	esac
-	echo $'1) Create Database.\n2) List Database.\n3) Connect to Databases.\n4) Drop Database.\n5) Exit.'
 done
+
 
 
 
