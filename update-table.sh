@@ -23,7 +23,6 @@ function getColumnNamesAndDatatypeInArraysToUpdate(){
 	echo $radio_string
 }
 
-
 # check if the user inserts duplicated primary key. 
 function checkOnPrimaryKey(){
 	currentValueOfPrimaryKey=`echo $1 | cut -f$columnPrimaryKey -d$DELIMITER`
@@ -39,7 +38,6 @@ function checkOnPrimaryKey(){
 
 # function to over write the old record with the new record with making validation on the inserted datatype of columns
 function replaceRecordInTable(){
-	tableView $1 $DELIMITER
 	local replaceStatement=""
 	typeset -i currentColumn=1
 	local length=$(head -n 1 .$tableName | tr $DELIMITER ' ' | wc -w)
@@ -110,7 +108,7 @@ function replaceRecordInTable(){
 #function to update old records with new records
 function updateTable() {
 	clear
-	checkOnTable
+	myCheckOnTable
 	# echo "please select on column to search for: "
 	getColumnNamesAndDatatypeInArraysToUpdate
 

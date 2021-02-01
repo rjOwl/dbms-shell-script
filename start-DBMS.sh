@@ -10,8 +10,7 @@ cd Database-schema
 
 while true
 do
-	userChoice=`zenity --list --text "Welcome to OurSQL" --radiolist  --column "Pick" --column "Menu"    FALSE "Create Database" FALSE  "List Database" FALSE  "Connect to Databases" FALSE "Drop Database" FALSE "Exit"`
-	echo $?
+	userChoice=`zenity --list --text "Welcome to OurSQL" --radiolist  --column "Pick" --column "Menu"  FALSE "Create Database" FALSE  "List Database" FALSE  "Connect to Databases" FALSE "Drop Database" FALSE "Exit"`
 	if [[ $? -eq 1 ]]
 	then
 		break

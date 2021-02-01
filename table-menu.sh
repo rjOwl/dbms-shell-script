@@ -1,11 +1,11 @@
 #!/bin/bash
 
 #interface with tables.
-. create-table.sh
-. delete-from-table.sh
-. update-table.sh
-. dml.sh
-. select-from-table.sh
+. ./create-table.sh
+. ./delete-from-table.sh
+. ./update-table.sh
+. ./dml.sh
+. ./select-from-table.sh
 
 function tableMenu() {
 while true
@@ -38,7 +38,7 @@ do
 		"Return")
 		   cd ..
 		   break ;;
-		*) zenity --warning --title="Table Options" --text="Wrong choice! please choose from the above choices."
+		*) zenity --warning --title="Table Options" --width="500" --height="100" --text="Wrong choice! please choose from the above choices."
 	esac
 done
 }

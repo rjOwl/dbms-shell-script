@@ -25,7 +25,7 @@ function insertIntoTable(){
     if [ ${columns_types[$i]} == "DATE" ]
         then
             zen_col+="--add-calendar=${columns_names[$i]} "
-        elif  (( $lower == "password" ))
+        elif  [[ $lower == "password" ]]
             then
                 zen_col+="--add-password=${columns_names[$i]} "
         else
@@ -98,7 +98,6 @@ function dropTable(){
         mv $table_name .$table_name .trash
 	zenity --notification --title="Drop Table" --text="Done."
     else 
-	zenity --warning --title="Drop Table" --text="Table is not found"
+	zenity --warning --title="Drop Table" --width="500" --height="100" --text="Table is not found"
     fi
 }
-

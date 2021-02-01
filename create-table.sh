@@ -6,17 +6,19 @@
 typeset -i endCreationFlag=1
 typeset -i numberOfcolumnCreation=0
 typeset -i columnPrimaryKeyCreation=0
-typeset -i printLineCreation=0
+printLineCreation=""
+Type=""
 columnNames=""
 columnDatatype=""
 
+
 #function to check if the table is exist
 function thisCheckOnTableCreation(){
-	read -p "please insert table name to be created: " tableName
+	tableName=`zenity --entry --title="Table Creation" --text="please insert table name to be created."`
 	while [ -f $tableName ] 
 	do
-		echo -e "\e[31mThe table name already exist, please insert another name.\e[0m"
-		read -p "please insert table name: " tableName
+		zenity --warning --title="Table Creation"  --width="500" --height="100" --text="The table name already exist, please insert another name."
+		tableName=`zenity --entry --title="Table Creation"  --text="please insert table name."`
 	done 
 }
 
@@ -24,13 +26,10 @@ function thisCheckOnTableCreation(){
 function saveTable(){
 	if [ $numberOfcolumnCreation -eq 0 ]
 	then
-		echo -e "\e[31mNo column in the table, so this table will not be created.\e[0m"
-		read -p "Are you sure that you want to cancel the table creation process [Y/n]: " SureChoice
-echo $SureChoice
-		if [ $SureChoice != N -a $SureChoice != n ]
+		zenity --question --title="Table Creation" --width="500" --height="100" --ok-label="Yes" --cancel-label="No" --text="No column in the table, so this table will not be created.\nAre you sure that you want to cancel the table creation process?"
+	        if [[ $? == 0 ]]
 		then 
-			endCreationFlag=0
-			echo "----------------------------------------------------------------------------"			
+			endCreationFlag=0;		
 		fi
 	else
 		touch .$tableName
@@ -38,8 +37,7 @@ echo $SureChoice
 		echo $columnNames >> .$tableName
 		echo $columnDatatype >> .$tableName
 		echo $columnPrimaryKeyCreation >> .$tableName
-		echo -e "\e[32mthe $tableName has been created successfully.\e[0m"
-		echo "----------------------------------------------------------------------------"
+		zenity --notification --title="Table Creation" --text="the $tableName has been created successfully."
 		endCreationFlag=0
 	fi
 }
@@ -53,73 +51,35 @@ function addDelimiterToRecordCreation(){
 	fi
 }
 
-#show the last columns with datatype to the user while adding new column.
-function tableViewCreation(){
-	zenityVar=""
-	if [[ $numberOfcolumnCreation != 0 ]]
-	then
-		typeset -i j=0
-		while [ $j -lt $printLineCreation ] 
-		do
-			zenityVar+="-"
-			let "j++"
-		done
-		zenityVar+="\n"
-		for i in ${arrayOfColumnName[*]}
-		do
-			zenityVar+="  $i  |"
-		done
-		zenityVar+="\n"
-		j=0
-		while [ $j -lt $printLineCreation ]
-		do
-			zenityVar+="-"
-			let "j++"
-		done
-		zenityVar+="\n"
-		zenity --entry --title="last Columns" --text=$zenityVar
-
-	fi
-}
-
 #ask the user to insert valid datatype (INT - STRING - DATE) for the new record
 function getColumnDatatypeCreation(){
 	while true
 	do
-		echo "1) Integar."
-		echo "2) String."
-		echo "3) Date."
-		read -p "please insert new column datatype: " newColumnDatatype
-		if [ $newColumnDatatype == 1 ]
+		newColumnDatatype=`zenity --list --title="Table Creation" --height="300" --column=Menu "Integer" "String" "Date" --text="please insert new column datatype."`
+		if [ $newColumnDatatype == Integer ]
 		then
 			columnDatatype+="INT"
-			Type="(INT)"
 			break
-		elif [ $newColumnDatatype == 2 ]
+		elif [ $newColumnDatatype == String ]
 		then
 			columnDatatype+="STRING"
-			Type="(STRING)"
 			break
-		elif [ $newColumnDatatype == 3 ]
+		elif [ $newColumnDatatype == Date ]
 		then
 			columnDatatype+="DATE"
-			Type="(DATE)"
 			break
 		else
-			echo -e "\e[31mWrong choice.\e[0m"
+			zenity --warning --title="Table Creation" --width="500" --height="100"  --text="Wrong choice."
 		fi
 	done
-	#calculation on column name and datatype to print the table view next step
-	(( printLineCreation = $printLineCreation + 5 + ${#newColumnName} + ${#Type} ))
-	arrayOfColumnName[${numberOfcolumnCreation}]="$newColumnName$Type"
 }
 
 #ask the user about the primary key
 function getPrimaryKeyCreation(){
 	if [[ $columnPrimaryKeyCreation == 0 ]]
 	then
-		read -p "Do you want this key to be your primary key [Y/n]: " newcolumnPrimaryKeyCreation
-		if [ $newcolumnPrimaryKeyCreation != N -a $newcolumnPrimaryKeyCreation != n ]
+		newcolumnPrimaryKeyCreation=`zenity --question --title="Table Creation" --ok-label="Yes" --cancel-label="No" --width="500" --height="100" --text="Do you want this key to be your primary key?"`
+	        if [[ $? == 0 ]]
 		then 
 			(( columnPrimaryKeyCreation = numberOfcolumnCreation ))			
 		fi
@@ -128,36 +88,32 @@ function getPrimaryKeyCreation(){
 
 #function to create new table in current database
 function createTable() {
-	#clear
-	echo ----------------------------------------------------------------------------
 	thisCheckOnTableCreation
 	while [[ $endCreationFlag == 1 ]]
 	do
-		userChoice=`zenity --entry --title="Creation of new Database" --text='1) Add new column.\n2) Create table with at least one column.\n3) Exit without save.\n'`
-		echo ----------------------------------------------------------------------------
-		echo "1) Add new column."
-		echo "2) Create table with at least one column."
-		echo "3) Exit without save."
-
-		read -p "please insert your choice: " userChoice
-		if [[ $userChoice == 1 ]]
+		userChoice=`zenity --list --title="Table Creation" --height="300" --width="400" --column=Menu "Add new column." "Create table with at least one column." "Exit without save." --text="please insert new column datatype."`
+	        if [[ $? == 1 ]]
+		then 
+			break		
+		fi
+		if [[ $userChoice == "Add new column." ]]
 		then
 			addDelimiterToRecordCreation
 			tableViewCreation
-			read -p "please insert new column name: " newColumnName
+			newColumnName=`zenity --entry --title="Table Creation" --text='please insert new column name.'`
 			columnNames+=$newColumnName
 			getColumnDatatypeCreation
 			let "numberOfcolumnCreation++"
 			getPrimaryKeyCreation
-		elif [[ $userChoice == 2 ]]
+		elif [[ $userChoice == "Create table with at least one column." ]]
 		then
 			saveTable
-		elif [[ $userChoice == 3 ]]
+		elif [[ $userChoice == "Exit without save." ]]
 		then
-			echo "----------------------------------------------------------------------------"
 			break		
 		else
-			echo -e "\e[31mWrong choice.\e[0m"
+			zenity --warning --title="Table Creation" --width="500" --height="100"  --text="Wrong choice."
 		fi		 
 	done
 }
+
