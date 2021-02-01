@@ -51,7 +51,7 @@ function getSelectedColumnsFromUser(){
 			if [[ $rightColumnName == 0 ]]
 			then
 				echo -e "\e[31mNo such column with '$i' name.\e[0m"
-				break			
+				break
 			fi
 			let "outsideLoop++"
 			
@@ -61,7 +61,6 @@ function getSelectedColumnsFromUser(){
 			break			
 		fi
 	done
-	
 }
 
 #function to update old records with new records

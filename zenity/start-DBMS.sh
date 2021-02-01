@@ -10,17 +10,13 @@ cd Database-schema
 
 while true
 do
-	userChoice=`zenity --entry --title="Welcome to OurSQL" --text='1) Create Database.\n2) List Database.\n3) Connect to Databases.\n4) Drop Database.\n5) Exit.'`
+	userChoice=`zenity --list --text "Welcome to OurSQL" --radiolist  --column "Pick" --column "Menu"    FALSE "Create Database" FALSE  "List Database" FALSE  "Connect to Databases" FALSE "Drop Database" FALSE "Exit"`
+	echo $?
 	if [[ $? -eq 1 ]]
 	then
 		break
 	fi
 	case $userChoice in
-	    1) createNewDatabase ;;
-	    2) listDatabases ;;
-	    3) connectDb ;;
-	    4) dropDb ;;
-	    5) break ;;
 	    "Create Database") createNewDatabase ;;
 	    "List Database") listDatabases ;;
 	    "Connect to Databases") connectDb ;;

@@ -24,7 +24,7 @@ function createNewDatabase(){
 		else
 			mkdir $newDatabaseName
 			mkdir $newDatabaseName'/.trash'
-             		zenity --notification --title="Database creation" --text="The New Database has been created successfully."
+			zenity --notification --title="Database creation" --text="The New Database has been created successfully."
 			break
 		fi
 	done
